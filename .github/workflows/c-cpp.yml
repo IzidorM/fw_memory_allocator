@@ -17,5 +17,8 @@ jobs:
       with:
         repository: ThrowTheSwitch/Unity.git
         path: tools
-    - name: make
-      run: make -j4
+        ref: Master
+    - name: Navigate to project directory
+      run: cd path/to/your/project
+    - name: Make and run
+      run: make clean; make -j4
