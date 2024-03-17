@@ -7,14 +7,16 @@ instead of the heap. It's purpose is to substitute normal compiler
 based static memory allocation in embedded systems and provide some
 additional benefits which are hard to get otherwise:
 
-- memory overflow protection by adding canary values
-- simplifying the use of different ram types in the system
+- memory overflow detection by adding canary values
+- use of opaque types
+- simplifying the use of different ram types/sections in the system
 
 
 ## Features
 * Written in C
 * Small and efficient code base
-* Provides locking of memory allocation
+* Provides memory overflow detection by adding canary values
+* Can be disabled (locked) after system initialization
 * Support for multiple instances in case system offers different ram sections
 * BSD license
 
@@ -25,7 +27,7 @@ multiple instances if needed.
 
 ### Simple usage when only one allocator is needed
 ``` c
-#include <stdint.h>
+#include <stdint.h>g
 
 // memory that allocator will work on
 static uint8_t mem[1024];
