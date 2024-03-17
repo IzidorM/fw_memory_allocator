@@ -1,13 +1,24 @@
-TOOLS_DIR = ../../tools/
-SRC_DIR = ../src/
-
 ifndef $(TARGET)
 TARGET=memory_allocator
 endif
 
+
+ifndef TOOLS_DIR
+TOOLS_DIR = ../../tools/
+#TOOLS_DIR = ./
+endif
+
+ifndef BUILD_DIR
+BUILD_DIR=/tmp/$(TARGET)
+#BUILD_DIR=./build/
+endif 
+
+SRC_DIR = ../src/
+
+
 PROJECT_BASE_DIR = .
 
-BUILD_DIR=/tmp/
+
 
 FILES_TO_TEST_SRC= \
 	$(SRC_DIR)/memory_allocator.c
@@ -52,7 +63,8 @@ INC_DIRS_GCC = $(patsubst %,-I%, $(INC_DIRS))
 
 run: $(BUILD_DIR)/$(TARGET)
 	@echo "Running tests"
-	@/usr/bin/time --format="\nTest run time: %E, Max memory: %M Kb" $(BUILD_DIR)/$(TARGET)
+	@$(BUILD_DIR)/$(TARGET)
+#	@time --format="\nTest run time: %E, Max memory: %M Kb" $(BUILD_DIR)/$(TARGET)
 	@printf "\nGCOV:\n"
 	@gcov -n $(BUILD_DIR)/$(COVERAGE_FILES_NO_PATH) |\
 		sed 's/^\s*$$/Sum/' |\
@@ -61,6 +73,7 @@ run: $(BUILD_DIR)/$(TARGET)
 
 $(BUILD_DIR)/%_Runner.c: $(TESTS_SRC)
 	@echo "generating $<"
+	mkdir -p $(BUILD_DIR)/
 	@ruby $(TOOLS_DIR)/Unity/auto/generate_test_runner.rb $< $@
 
 

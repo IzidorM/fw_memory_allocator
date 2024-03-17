@@ -12,13 +12,22 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-    - name: Checkout Unity repo
-      uses: actions/checkout@v4
+    - uses: ruby/setup-ruby@v1
       with:
-        repository: ThrowTheSwitch/Unity.git
-        path: tools
-        ref: Master
-    - name: Navigate to project directory
-      run: cd path/to/your/project
-    - name: Make and run
-      run: make clean; make -j4
+        ruby-version: '3.3'
+    - name: install_deps
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y time
+    - name: Party!
+      run: |
+        cd unit_tests
+        git clone https://github.com/ThrowTheSwitch/Unity.git
+        make clean; make -j4 TOOLS_DIR=./ BUILD_DIR=build/
+
+#    - name: Checkout Unity repo
+#      run: ls -l; git clone https://github.com/ThrowTheSwitch/Unity.git
+#    - name: Check where we are
+#      run: ls -l
+#    - name: Make and run
+#      run: make clean; make -j4 TOOLS_DIR=./ BUILD_DIR=build/
