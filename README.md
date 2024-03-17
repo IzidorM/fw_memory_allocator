@@ -108,10 +108,8 @@ The function returns true if the overflow was detected. This function should be 
 
 We will skip the explanation of why static memory allocation is
 typically used in embedded systems. Instead, we will explore the
-shortcomings of static memory allocation and how to implement a
-restricted form of dynamic memory allocation. This approach aims to
-address the weaknesses of static memory allocation without introducing
-the drawbacks of conventional dynamic memory allocation.
+shortcomings of compiler based static memory allocation and how to
+implement a runtime static memory allocation to avoid this shortcomings. 
 
 So there are 3 problems with static memory allocation that I want to
 solve with this library:
@@ -124,16 +122,7 @@ solve with this library:
 
 
 ## Implementation details
-
-So the idea is to use the dynamic memory allocation during system
-initialization phase and then lock it when the system transition in
-to the running phase.  Because we only use it when initializing the
-system we don't need to implement the memory releasing functionality,
-because it will never be used. This way we avoid dealing with memory
-fragmentation. We also implement locking functionality and error
-callback, so if our malloc fail because of locked memory or running
-out of ram, the provided error callback will be called, so 
-
+TODO :)
 
 ## Contribute
 Everybody is welcome to contribute.
