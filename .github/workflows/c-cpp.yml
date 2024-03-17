@@ -24,10 +24,3 @@ jobs:
         cd unit_tests
         git clone https://github.com/ThrowTheSwitch/Unity.git
         make clean; make -j4 TOOLS_DIR=./ BUILD_DIR=build/
-
-#    - name: Checkout Unity repo
-#      run: ls -l; git clone https://github.com/ThrowTheSwitch/Unity.git
-#    - name: Check where we are
-#      run: ls -l
-#    - name: Make and run
-#      run: make clean; make -j4 TOOLS_DIR=./ BUILD_DIR=build/

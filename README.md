@@ -1,16 +1,27 @@
-# memory allocator
-Simple implementation of a memory allocator. It provides overflow detection by enclosing each block with canary values. It doesnt provide memory free functionality. Its purpose is to substitute normal static memory allocation in embedded systems and provide some additional benefits which are hard to get when using static memory allocation. It provides locking mechanism that can be used to prevent using memory allocation after system initialization is done.
+# runtime static memory allocator
+Simple implementation of a run-time static memory allocator. It
+provides overflow detection by enclosing each block with canary
+values. It looks like dynamic memory allocator, but it doesn't provide
+memory free functionality and it works on user provided memory array
+instead of the heap. It's purpose is to substitute normal compiler
+based static memory allocation in embedded systems and provide some
+additional benefits which are hard to get otherwise:
+
+- memory overflow protection by adding canary values
+- simplifying the use of different ram types in the system
+
 
 ## Features
 * Written in C
-* Small and efficint code base
+* Small and efficient code base
 * Provides locking of memory allocation
 * Support for multiple instances in case system offers different ram sections
 * BSD license
 
 ## Usage
 
-Memory allocator needs to be initialized before use, so we can have multiple instances if needed. 
+Memory allocator needs to be initialized before use, so we can have
+multiple instances if needed.
 
 ### Simple usage when only one allocator is needed
 ``` c
@@ -30,7 +41,6 @@ void *my_malloc(size_t size)
 {
 	return mem_allocator_malloc_static(m, size);
 }
-
 
 ```
 
@@ -109,6 +119,18 @@ solve with this library:
 2. Lacks buffer overflow detection: Buffer overflow errors can't be detected easily as static memory doesn't inherently provide such mechanisms.
 
 3. Inefficient memory sectioning: With microcontrollers (MCUs) that have RAM divided into different sections (fast RAM, normal RAM, etc.), static memory allocation requires detailed configuration and tweaking of linker scripts to determine allocation of variables to different memory sections. 
+
+
+## Implementation details
+
+So the idea is to use the dynamic memory allocation during system
+initialization phase and then lock it when the system transition in
+to the running phase.  Because we only use it when initializing the
+system we don't need to implement the memory releasing functionality,
+because it will never be used. This way we avoid dealing with memory
+fragmentation. We also implement locking functionality and error
+callback, so if our malloc fail because of locked memory or running
+out of ram, the provided error callback will be called, so 
 
 
 ## Contribute
